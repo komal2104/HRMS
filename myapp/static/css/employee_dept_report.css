@@ -1,0 +1,80 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    background: linear-gradient(to right, rgb(31, 133, 133), white); /* Gradient background */
+    color: #333; /* Dark text for better contrast */
+}
+
+.header {
+    text-align: center; /* Center align the header */
+    margin-bottom: 20px; /* Space below the header */
+}
+
+h1 {
+    font-size: 28px; /* Increase font size for main heading */
+    color: #4CAF50; /* Green color for the heading */
+}
+
+h2 {
+    font-size: 20px; /* Subheading font size */
+    color: #555; /* Darker shade for the subheading */
+}
+
+#chartContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 50px; /* Add some margin */
+    padding: 50px; /* Add padding */
+    border-radius: 10px; /* Rounded corners */
+    background-color: white; /* Slightly transparent background */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+}
+
+#employeeChart {
+    max-width: 600px;
+    width: 100%;
+    height: auto;
+}
+
+label {
+    margin-bottom: 10px;
+    font-size: 18px; /* Increased font size for label */
+}
+
+/* Styles for the dropdown */
+#chartType {
+    width: 200px; /* Adjust the width as needed */
+    height: 40px; /* Increase the height */
+    padding: 5px; /* Add padding for better appearance */
+    font-size: 16px; /* Adjust font size */
+    border-radius: 5px; /* Rounded corners */
+    border: 1px solid #ccc; /* Add border for better visibility */
+    cursor: pointer; /* Change cursor to pointer on hover */
+}
+
+.nav {
+    position: fixed;
+    bottom: 20px; /* Position from the bottom */
+    right: 20px; /* Position from the right */
+}
+
+.back-button {
+    padding: 10px 20px; /* Button padding */
+    font-size: 16px; /* Button font size */
+    color: #fff; /* White text */
+    background-color: #4CAF50; /* Green background */
+    border: none; /* No border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor */
+    transition: background-color 0.3s; /* Smooth transition */
+}
+
+.back-button:hover {
+    background-color: #45a049; /* Darker green on hover */
+}

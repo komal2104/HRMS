@@ -1,0 +1,54 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Management</title>
+    <link rel="stylesheet" href="{% static 'css/home_style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/attendance_form.css' %}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Attendance Management</h1>
+    </header>
+
+    <div class="attendance-report-button">
+        <a href="{% url 'attendance_report' %}">
+            <button>Attendance Report</button>
+        </a>
+    </div>
+
+    <main>
+        <div class="container">
+            {% if messages %}
+                <div class="messages">
+                    <ul>
+                        {% for message in messages %}
+                            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+            
+            <form method="post">
+                {% csrf_token %}
+                <label for="{{ form.date.id_for_label }}">{{ form.date.label }}</label>
+                {{ form.date }}<br>
+                
+                <label for="{{ form.user.id_for_label }}">{{ form.user.label }}</label>
+                {{ form.user }}<br>
+                
+                <button type="submit">Mark Attendance</button>
+            </form>
+        </div>
+    </main>
+
+    <div class="back-home-button">
+        <a href="{% url 'home' %}">
+            <button>Back to Home</button>
+        </a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,75 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User List</title>
+    <link rel="stylesheet" href="{% static 'css/user_list.css' %}">
+</head>
+<body>
+    <header>
+        <h1>User Management</h1>
+    </header>
+
+    <main>
+        <form method="get" action="{% url 'user_list' %}">
+            <input type="text" name="search" placeholder="Search users..." value="{{ search_query }}">
+            <button type="submit">Search</button>
+            <a href="{% url 'user_add' %}" class="add-user-button">Add User</a>
+        </form>
+
+        {% if users.count == 0 %}
+            <div class="no-data">
+                <p>No data found</p>
+            </div>
+        {% else %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Designation</th>
+                        <th>Department</th>
+                        <th>Date of Joining</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                        <tr>
+                            <td>{{ user.name }}</td>
+                            <td>{{ user.email }}</td>
+                            <td>{{ user.designation }}</td>
+                            <td>{{ user.department }}</td>
+                            <td>{{ user.date_of_joining }}</td>
+                            <td class="actions">
+                                <a href="{% url 'user_edit' user.id %}">Edit</a>
+                                <a href="{% url 'user_delete' user.id %}">Delete</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="pagination">
+                <span>Page {{ users.number }} of {{ users.paginator.num_pages }}</span>
+                {% if users.has_previous %}
+                    <a href="?page=1">First</a>
+                    <a href="?page={{ users.previous_page_number }}">Previous</a>
+                {% endif %}
+                <span> | </span>
+                {% if users.has_next %}
+                    <a href="?page={{ users.next_page_number }}">Next</a>
+                    <a href="?page={{ users.paginator.num_pages }}">Last</a>
+                {% endif %}
+            </div>
+        {% endif %}
+    </main>
+
+    <div class="back-home-button">
+        <a href="{% url 'home' %}">
+            <button>Back to Home</button>
+        </a>
+    </div>
+</body>
+</html>

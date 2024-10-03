@@ -1,0 +1,113 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Distribution by Department</title>
+    <link rel="stylesheet" href="{% static 'css/home_style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/employee_dept_report.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="header">
+        <h1>Employee-Dept Visualization</h1> <!-- Main heading -->
+        <h2>Overview of Employee Distribution Across Departments</h2> <!-- Subheading -->
+    </div>
+
+    <div id="chartContainer">
+        <label for="chartType">Select Chart Type:</label>
+        <select id="chartType">
+            <option value="pie">Pie Chart</option>
+            <option value="bar">Bar Chart</option>
+            <option value="line">Line Chart</option>
+        </select>
+
+        <canvas id="employeeChart" width="400" height="400"></canvas>
+    </div>
+
+    <div class="nav">
+        <a href="{% url 'home' %}">
+            <button class="back-button">Back to Home</button>
+        </a>
+    </div>
+
+    <script>
+        const ctx = document.getElementById('employeeChart').getContext('2d');
+        let employeeChart; // Declare the chart variable globally
+
+        async function fetchEmployeeData() {
+            const response = await fetch('/employee-distribution/'); // Ensure this API is set up
+            const data = await response.json();
+            return data; // Assuming data is an object { "Department A": count, "Department B": count }
+        }
+
+        function createChart(type, labels, data) {
+            if (employeeChart) {
+                employeeChart.destroy(); // Destroy the previous chart instance if it exists
+            }
+
+            employeeChart = new Chart(ctx, {
+                type: type,
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Number of Employees',
+                        data: data,
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true // Ensure Y axis starts at 0
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Employee Distribution by Department'
+                        }
+                    }
+                }
+            });
+        }
+
+        document.getElementById('chartType').addEventListener('change', function() {
+            const type = this.value; // Get the selected chart type
+            fetchEmployeeData().then(data => {
+                const labels = Object.keys(data);
+                const counts = Object.values(data);
+                createChart(type, labels, counts); // Create the chart with the new type
+            });
+        });
+
+        // Initial fetch to create the default pie chart
+        fetchEmployeeData().then(data => {
+            const labels = Object.keys(data);
+            const counts = Object.values(data);
+            createChart('pie', labels, counts); // Set default chart type to pie
+        });
+    </script>
+</body>
+</html>

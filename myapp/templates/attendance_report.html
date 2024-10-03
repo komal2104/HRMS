@@ -1,0 +1,122 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Report</title>
+    <link rel="stylesheet" href="{% static 'css/home_style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/attendance_form.css' %}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Initialize Select2 for user dropdown
+            $('#report_user').select2({
+                placeholder: "Select a user",
+                allowClear: true
+            });
+
+            $("#reportForm").on("submit", async function(event) {
+                event.preventDefault();  // Prevent the default form submission
+
+                var user = $("#report_user").val();
+                var fromDate = $("#from_date").val();
+                var toDate = $("#to_date").val();
+                var today = new Date();
+                var from = new Date(fromDate);
+                var to = new Date(toDate);
+
+                // Validate form inputs
+                if (!user) {
+                    alert("Please select a user.");
+                    return;
+                }
+                if (!fromDate || !toDate) {
+                    alert("Please select both 'From' and 'To' dates.");
+                    return;
+                }
+                if (to > today) {
+                    alert("'To' date cannot be in the future.");
+                    return;
+                }
+                if (to < from) {
+                    alert("'To' date cannot be earlier than 'From' date.");
+                    return;
+                }
+                // Ensure the date range is not more than 6 months apart
+                var sixMonthsAgo = new Date(from);
+                sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() + 6);
+                if (to > sixMonthsAgo) {
+                    alert("The date range cannot be more than 6 months apart.");
+                    return;
+                }
+
+                // If validation passes, download the report
+                const formData = new FormData(this);
+                const response = await fetch('/attendance-report/', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    const link = document.createElement('a');
+                    link.href = 'data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,' + data.file_data;
+                    link.download = data.file_name;  // Adjust this line based on your response structure
+                    link.click();
+                } else {
+                    console.error('Failed to generate report.');
+                    alert('An error occurred while generating the report. Please try again.');
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <header>
+        <h1>Generate Attendance Report</h1>
+    </header>
+
+    <div class="container">
+        {% if messages %}
+            <div class="messages">
+                <ul>
+                    {% for message in messages %}
+                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+        
+        <form id="reportForm" method="post">
+            {% csrf_token %}
+            <label for="report_user">Select User:</label>
+            <select id="report_user" name="user" required>
+                <option value="">Select a user</option>
+                {% for user in report_form.user.field.queryset %}
+                    <option value="{{ user.id }}">{{ user.name }}</option>
+                {% endfor %}
+            </select>
+        
+            <label for="from_date">From:</label>
+            <input type="date" id="from_date" name="from_date" required>
+        
+            <label for="to_date">To:</label>
+            <input type="date" id="to_date" name="to_date" required>
+        
+            <button type="submit">Generate Report</button>
+        </form>
+    </div>
+
+    <div class="back-home-button">
+        <a href="{% url 'home' %}">
+            <button>Back to Home</button>
+        </a>
+        <a href="{% url 'mark_attendance' %}">
+            <button>Back to Attendance Management</button>
+        </a>
+    </div>
+</body>
+</html>

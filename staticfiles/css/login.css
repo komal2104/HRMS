@@ -1,0 +1,102 @@
+/* static/css/super_admin_style.css */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #f4f4f4;
+    display: flex; /* Enable flexbox */
+    flex-direction: column; /* Arrange children vertically */
+    min-height: 100vh; /* Ensure the body covers full viewport height */
+}
+
+header {
+    background-color: #720cd1; /* Purple */
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+}
+
+header h1 {
+    margin-bottom: 10px;
+}
+
+.container {
+    flex: 1; /* Allow the container to grow and fill available space */
+    display: flex; /* Enable flexbox */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    padding: 20px;
+}
+
+main {
+    padding: 20px 0;
+}
+
+.box {
+    background-color: white;
+    padding: 40px; /* Adjust padding for better appearance */
+    margin: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 100%; /* Allow box to be responsive */
+    max-width: 500px; /* Increased maximum width */
+    min-height: 300px; /* Set a minimum height for the box */
+}
+
+.box h2 {
+    color: #333;
+    text-align: center; /* Center the heading */
+    margin-bottom: 20px; /* Add space below the heading */
+}
+
+input[type="text"],
+input[type="password"] {
+    width: 100%; /* Full width inputs */
+    padding: 10px; /* Add padding for better appearance */
+    margin: 10px 0; /* Add margin for spacing between fields */
+    border: 1px solid #ddd; /* Add border */
+    border-radius: 5px; /* Rounded corners */
+}
+
+button {
+    background-color: #720cd1; /* Purple */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px; /* Space between the button and the last input field */
+    width: 100%; /* Full width button */
+}
+
+button:hover {
+    background-color: #5a0e9e; /* Darker purple on hover */
+}
+
+.error {
+    color: red;
+    text-align: center; /* Center error messages */
+    margin-top: 10px; /* Add margin above error messages */
+}
+
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 40px 0; /* Increased padding for a wider footer */
+    margin-top: auto; /* Push footer to the bottom */
+    position: fixed; /* Fixed position */
+    bottom: 0; /* Stick to the bottom */
+    width: 100%; /* Full width footer */
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle shadow for depth */
+}
+
+
+

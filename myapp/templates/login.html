@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Super Admin Login</title>
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">  <!-- Link to new CSS -->
+</head>
+<body>
+    <header>
+        <h1>HRMS : Manage Employees Efficiently !</h1>
+        
+    </header>
+    
+    <div class="container">
+        <main>
+            <div class="box">
+                <h2>Admin Login</h2>
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}  <!-- Render form fields -->
+                    <button type="submit">Login</button>
+                </form>
+                {% if form.errors %}
+                    <div class="error">
+                        <p>Please correct the errors below:</p>
+                        <ul>
+                            {% for error in form.non_field_errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+            </div>
+        </main>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 HRMS. All Rights Reserved.</p>
+    </footer>
+</body>
+</html>

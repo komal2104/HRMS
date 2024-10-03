@@ -1,0 +1,37 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add/Edit User</title>
+    
+    <link rel="stylesheet" href="{% static 'css/user_form.css' %}">
+</head>
+<body>
+    <header>
+        <h1 class="form-title">{% if form.instance.id %}Edit{% else %}Add{% endif %} User</h1>
+    </header>
+
+    <main>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.name.label_tag }}
+            {{ form.name }}
+
+            {{ form.email.label_tag }}
+            {{ form.email }}
+
+            {{ form.designation.label_tag }}
+            {{ form.designation }}
+
+            {{ form.department.label_tag }}
+            {{ form.department }}
+
+            {{ form.date_of_joining.label_tag }}
+            {{ form.date_of_joining }}
+
+            <button type="submit">Save</button>
+        </form>
+    </main>
+</body>
+</html>
